@@ -13,7 +13,11 @@ public_users.post("/register", (req,res) => {
 // Get the book list available in the shop
 public_users.get('/',function (req, res) {
   //Write your code here
-  return res.status(300).json({message: "Yet to be implemented"});
+  //return res.status(300).json({message: "Yet to be implemented"});
+    let book_list = JSON.stringify(books. null, 4);
+
+  return res.send(book_list);
+
 });
 
 // Get book details based on ISBN
