@@ -6,68 +6,79 @@ const regd_users = express.Router();
 let users = [];
 
 const isValid = (username) => {
-    let matched_username = users.find( (user) =>  user.username === username);
-    if(matched_username)
+    let matched_username = users.find((user) => user.username === username);
+    if (matched_username)
         return false;
     else
         return true;
 }
 
-const authenticatedUser = (username,password) => {
-
-    let matched = users.find( (user) =>  user.username === username && user.password === password);
-    if(matched)
-        return true;
-    else
-        return false;
+const authenticatedUser = (username, password) => {
+    return users.some(user => user.username === username && user.password === password);
 }
 
 //only registered users can login
-regd_users.post("/login", (req,res) => {
-
-    console.log("just call login");
+regd_users.post("/login", (req, res) => {
 
     const username = req.body.username;
     const password = req.body.password;
 
-    if(! (username && password))
-    {
-        console.log("Missing login info");
-        return res.status(300).json({message: "Missing login info"});
+    if (!(username && password)) {
+        return res.status(300).json({ message: "Missing login info" });
     }
 
-    
-    if( authenticatedUser(username, password))
-    {
-        console.log("correct login info");
-
+    if (authenticatedUser(username, password)) {
         let accessToken = jwt.sign({
             data: password
         }, 'access', { expiresIn: 60 * 60 });
 
-        // Store access token and username in session
         req.session.authorization = {
             accessToken, username
         }
-
         return res.status(200).send("User successfully logged in");
     }
-    else
-    {
+    else {
         console.log("incorrect login info");
-        return res.status(300).json({message: "Incorrect login info"});
+        return res.status(300).json({ message: "Incorrect login info" });
     }
-    
-
-    //return res.status(300).json({message: "login ... ???"});
-
 });
 
 // Add a book review
 regd_users.put("/auth/review/:isbn", (req, res) => {
-  //Write your code here
-  return res.status(300).json({message: "Yet to be implemented"});
+
+    const isbn = req.params.isbn;
+    const username = req.session.authorization.username;
+    const comment = req.body.comment;
+
+    let selected_book = Object.entries(books).find(([id, detail]) => id === isbn);
+
+    if (selected_book) {
+        selected_book[1]["reviews"][username] = comment;
+        return res.send(JSON.stringify(selected_book), null, 4);
+    }
+    else {
+        return res.status(200).json({ message: "no such book" });
+    }
 });
+
+// Delete a book review
+regd_users.delete("/auth/review/:isbn", (req, res) => {
+
+    const isbn = req.params.isbn;
+    const username = req.session.authorization.username;
+
+    let selected_book = Object.entries(books).find(([id, detail]) => id === isbn);
+
+    if (selected_book) {
+        delete selected_book[1]["reviews"][username];
+        return res.send(JSON.stringify(selected_book), null, 4);
+    }
+    else {
+        return res.status(200).json({ message: "no such book" });
+    }
+
+});
+
 
 module.exports.authenticated = regd_users;
 module.exports.isValid = isValid;
