@@ -35,7 +35,7 @@ regd_users.post("/login", (req, res) => {
         req.session.authorization = {
             accessToken, username
         }
-        return res.status(200).send("User successfully logged in");
+        return res.status(200).send("User successfully logged in: " + username);
     }
     else {
         console.log("incorrect login info");
@@ -54,7 +54,7 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
 
     if (selected_book) {
         selected_book[1]["reviews"][username] = comment;
-        return res.send(JSON.stringify(selected_book), null, 4);
+        return res.send("Book review added/updated successfully");
     }
     else {
         return res.status(200).json({ message: "no such book" });
@@ -71,7 +71,7 @@ regd_users.delete("/auth/review/:isbn", (req, res) => {
 
     if (selected_book) {
         delete selected_book[1]["reviews"][username];
-        return res.send(JSON.stringify(selected_book), null, 4);
+        return res.send("Book review deleted successfully");
     }
     else {
         return res.status(200).json({ message: "no such book" });
