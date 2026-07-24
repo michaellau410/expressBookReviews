@@ -14,7 +14,7 @@ npm install axios<br>
 following command is for AI grading
 
 1. curl -s https://api.github.com/repos/michaellau410/expressBookReviews | jq '.parent.full_name'
-2. curl http://localhost:5000/ (default type is GET, and for this , -X can be omitted)
+2. curl http://localhost:5000/ (default type is GET, -X can be omitted)
 3. curl http://localhost:5000/isbn/1
 4. curl http://localhost:5000/author/unknown
 5. curl http://localhost:5000/title/Things%20Fall%20Apart
