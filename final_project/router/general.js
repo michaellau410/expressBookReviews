@@ -73,13 +73,6 @@ public_users.get('/isbn/:isbn', async function (req, res) {
         return res.status(500).json({ message: "Error fetching book list" });
     }
 });
-/*
-public_users.get('/isbn/:isbn', function (req, res) {
-    let isbn = req.params.isbn;
-    let selected_books = Object.entries(books).filter(([id, detail]) => id === isbn);
-    return res.send(JSON.stringify(selected_books, null, 4));
-});
-*/
 
 
 // Get book details based on author
@@ -98,13 +91,7 @@ public_users.get('/author/:author', async function (req, res) {
         return res.status(500).json({ message: "Error fetching book list" });
     }
 });
-/*
-public_users.get('/author/:author', function (req, res) {
-    let author = req.params.author.toLowerCase();
-    let selected_books = Object.entries(books).filter(([id, detail]) => detail.author.toLowerCase() === author);
-    return res.send(JSON.stringify(selected_books, null, 4));
-});
-*/
+
 
 // Get all books based on title
 public_users.get('/title/:title', async function (req, res) {
@@ -122,13 +109,7 @@ public_users.get('/title/:title', async function (req, res) {
         return res.status(500).json({ message: "Error fetching book list" });
     }
 });
-/*
-public_users.get('/title/:title', function (req, res) {
-    let title = req.params.title.toLowerCase();
-    let selected_books = Object.entries(books).filter(([id, detail]) => detail.title.toLowerCase() === title);
-    return res.send(JSON.stringify(selected_books, null, 4));
-});
-*/
+
 
 //  Get book review
 public_users.get('/review/:isbn', async function (req, res) {
@@ -146,12 +127,6 @@ public_users.get('/review/:isbn', async function (req, res) {
         return res.status(500).json({ message: "Error fetching book list" });
     }
 });
-/*
-public_users.get('/review/:isbn', function (req, res) {
-    let isbn = req.params.isbn;
-    let selected_books = Object.entries(books).filter(([id, detail]) => id === isbn).map(([id, detail]) => detail.reviews);
-    return res.send(JSON.stringify(Object.fromEntries(selected_books), null, 4));
-});
-*/
+
 
 module.exports.general = public_users;
